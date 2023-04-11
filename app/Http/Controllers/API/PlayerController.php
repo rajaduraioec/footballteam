@@ -44,7 +44,7 @@ class PlayerController extends BaseController
      */
     public function show(Player $player): JsonResponse
     {
-        $data['player'] = $this->playerService->createPlayer($player->id);
+        $data['player'] = $this->playerService->getPlayerById($player->id);
 
         return $this->sendResponse($data, 'Player retrieved successfully.');
     }
@@ -73,8 +73,8 @@ class PlayerController extends BaseController
     {
         $code = $request->code ?? "";
         $name = $request->name ?? "";
-
-        $data['player'] = $this->playerService->getPlayer($code, $name);
+        
+        $data['player'] = $this->playerService->getPlayer($request->code,$request->name);
 
         return $this->sendResponse($data, 'Player retrieved successfully.');
     }

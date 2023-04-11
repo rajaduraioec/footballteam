@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CodeRouteBinder;
 use App\Traits\UniqueIndentifier;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Team extends Model
 {
-    use HasFactory, UniqueIndentifier;
+    use HasFactory, UniqueIndentifier, CodeRouteBinder;
      /**
      * The attributes that are mass assignable.
      *
