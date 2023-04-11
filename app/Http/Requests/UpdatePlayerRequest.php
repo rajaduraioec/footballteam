@@ -25,16 +25,16 @@ class UpdatePlayerRequest extends FormRequest
     {
         return [
             'firstName' => [
-                'required', 'max:255'
+                'nullable', 'max:255'
             ],
             'lastName' => [
-                'required', 'max:255'
+                'nullable', 'max:255'
             ],
             'playerImageURI' => [
-                'required', 'max:5000'
+                'nullable', 'max:5000'
             ],
-            'teamId' => [
-                'required', 'exists:'.(new Team)->getTable().',id'
+            'teamCode' => [
+                'nullable', 'exists:'.(new Team)->getTable().',code'
             ]
             
         ];
@@ -46,7 +46,7 @@ class UpdatePlayerRequest extends FormRequest
             'firstName' => 'first name',
             'lastName' => 'last name',
             'playerImageURI' => 'player image URI',
-            'teamId' => 'team id',
+            'teamCode' => 'team code',
         ];
     }
 }

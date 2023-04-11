@@ -64,9 +64,9 @@ class PlayerController extends BaseController
      */
     public function destroy(Player $player): JsonResponse
     {
-        $data['player'] = $this->playerService->deletePlayer($player->id);
+        $this->playerService->deletePlayer($player->id);
         
-        return $this->sendResponse($data, 'Player deleted successfully.');
+        return $this->sendResponse([], 'Player deleted successfully.');
     }
     
     public function player(Request $request): JsonResponse
@@ -74,7 +74,7 @@ class PlayerController extends BaseController
         $code = $request->code ?? "";
         $name = $request->name ?? "";
         
-        $data['player'] = $this->playerService->getPlayer($request->code,$request->name);
+        $data['player'] = $this->playerService->getPlayer($code, $name);
 
         return $this->sendResponse($data, 'Player retrieved successfully.');
     }

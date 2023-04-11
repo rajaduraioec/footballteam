@@ -24,7 +24,7 @@ class UpdateTeamRequest extends FormRequest
     {
         return [
             'name' => [
-                'required', 'max:255', Rule::unique('teams')->ignore($this->id),
+                'required', 'max:255', Rule::unique('teams')->ignore($this->route()->team->id),
             ],
             'logoURI' => [
                 'required', 'max:5000'

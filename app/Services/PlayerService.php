@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Player;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\PlayerResource;
+use App\Models\Team;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlayerService
@@ -16,7 +17,9 @@ class PlayerService
 
     public function createPlayer(array $data): JsonResource
     {
-        return new PlayerResource(Player::create($data));
+        $team = Team::where('code', '=', $data['teamCode'])->firstOrFail();
+
+        return new PlayerResource(Player::create(array_merge($data, [ 'teamId' => $team->id ])));
     }
     
     public function getPlayerById(int $id): JsonResource

@@ -32,8 +32,8 @@ class StorePlayerRequest extends FormRequest
             'playerImageURI' => [
                 'required', 'max:5000'
             ],
-            'teamId' => [
-                'required', 'exists:'.(new Team)->getTable().',id'
+            'teamCode' => [
+                'required', 'exists:'.(new Team)->getTable().',code'
             ]
             
         ];
@@ -45,7 +45,7 @@ class StorePlayerRequest extends FormRequest
             'firstName' => 'first name',
             'lastName' => 'last name',
             'playerImageURI' => 'player image URI',
-            'teamId' => 'team id',
+            'teamCode' => 'team code',
         ];
     }
 }
