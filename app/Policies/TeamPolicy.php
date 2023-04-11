@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class TeamPolicy
 {
@@ -13,7 +12,7 @@ class TeamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +20,7 @@ class TeamPolicy
      */
     public function view(User $user, Team $team): bool
     {
-        return $user->is_admin;
+        return true;
     }
 
     /**
@@ -44,22 +43,6 @@ class TeamPolicy
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Team $team): bool
-    {
-        return $user->is_admin;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Team $team): bool
-    {
-        return $user->is_admin;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Team $team): bool
     {
         return $user->is_admin;
     }

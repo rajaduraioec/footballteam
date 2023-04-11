@@ -19,8 +19,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class);
 
+Route::get('team', [TeamController::class, 'index']);   
+Route::post('team/players', [TeamController::class, 'players']);   
+Route::get('player', [PlayerController::class, 'index']);   
+Route::post('player/info', [PlayerController::class, 'player']);   
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
-    Route::resource('team', TeamController::class);    
-    Route::resource('player', PlayerController::class);    
+    Route::post('team', [TeamController::class, 'store']);
+    Route::get('team/{team}', [TeamController::class, 'show']);
+    Route::put('team/{team}', [TeamController::class, 'update']);
+    Route::delete('team/{team}', [TeamController::class, 'destroy']);
+  
+    Route::resource('player', PlayerController::class)->except(['index']);     
 });

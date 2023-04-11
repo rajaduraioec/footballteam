@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Team;
+use Illuminate\Http\Request;
+use App\Services\TeamService;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
-use App\Models\Team;
-use App\Services\TeamService;
 
 class TeamController extends BaseController
 {
@@ -14,13 +16,12 @@ class TeamController extends BaseController
     public function __construct(TeamService $teamService)
     {
         $this->teamService = $teamService;
-        $this->authorizeResource(Team::class, 'team');
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $data['teams'] = $this->teamService->getAllTeams();
 
@@ -30,7 +31,7 @@ class TeamController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTeamRequest $request)
+    public function store(StoreTeamRequest $request): JsonResponse
     {
         $data['team'] = $this->teamService->createTeam($request->validated());
 
@@ -40,7 +41,7 @@ class TeamController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Team $team)
+    public function show(Team $team): JsonResponse
     {
         $data['team'] = $this->teamService->getTeamById($team->id);
 
@@ -50,7 +51,7 @@ class TeamController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTeamRequest $request, Team $team)
+    public function update(UpdateTeamRequest $request, Team $team): JsonResponse
     {
         $data['team'] = $this->teamService->updateTeam($request->validated(), $team->id);
 
@@ -60,9 +61,20 @@ class TeamController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Team $team)
+    public function destroy(Team $team): JsonResponse
     {
-        $data['team'] = $this->teamService->deleteTeam($team->id);
-        return $this->sendResponse($team, 'Team deleted successfully.');
+        $this->teamService->deleteTeam($team->id);
+        
+        return $this->sendResponse([], 'Team deleted successfully.');
+    }
+
+    public function players(Request $request): JsonResponse
+    {
+        $code = $request->code ?? "";
+        $name = $request->name ?? "";
+
+        $data['players'] = $this->teamService->getTeamPlayers($code, $name);
+
+        return $this->sendResponse($data, 'Team players retrieved successfully.');
     }
 }

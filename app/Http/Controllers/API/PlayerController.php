@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\BaseController;
 use App\Models\Player;
+use Illuminate\Http\Request;
+use App\Services\PlayerService;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
-use App\Services\PlayerService;
+use App\Http\Controllers\API\BaseController;
 
 class PlayerController extends BaseController
 {
@@ -20,7 +22,7 @@ class PlayerController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $data['players'] = $this->playerService->getAllPlayers();
 
@@ -30,7 +32,7 @@ class PlayerController extends BaseController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePlayerRequest $request)
+    public function store(StorePlayerRequest $request): JsonResponse
     {
         $data['player'] = $this->playerService->createPlayer($request->validated());
 
@@ -40,17 +42,17 @@ class PlayerController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show(Player $player)
+    public function show(Player $player): JsonResponse
     {
         $data['player'] = $this->playerService->createPlayer($player->id);
 
-        return $this->sendResponse($data, 'Player created successfully.');
+        return $this->sendResponse($data, 'Player retrieved successfully.');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePlayerRequest $request, Player $player)
+    public function update(UpdatePlayerRequest $request, Player $player): JsonResponse
     {
         $data['player'] = $this->playerService->updatePlayer($request->validated(), $player->id);
 
@@ -60,10 +62,20 @@ class PlayerController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Player $player)
+    public function destroy(Player $player): JsonResponse
     {
         $data['player'] = $this->playerService->deletePlayer($player->id);
         
         return $this->sendResponse($data, 'Player deleted successfully.');
+    }
+    
+    public function player(Request $request): JsonResponse
+    {
+        $code = $request->code ?? "";
+        $name = $request->name ?? "";
+
+        $data['player'] = $this->playerService->getPlayer($code, $name);
+
+        return $this->sendResponse($data, 'Player retrieved successfully.');
     }
 }

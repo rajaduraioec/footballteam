@@ -3,35 +3,45 @@
 namespace App\Services;
 
 use App\Models\Team;
+use App\Http\Resources\TeamResource;
+use App\Http\Resources\PlayerResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeamService
 {
-    public function getAllTeams()
+    public function getAllTeams(): JsonResource
     {
-        return Team::all();
+        return TeamResource::collection(Team::all());
     }
 
-    public function createTeam(array $data)
+    public function createTeam(array $data): JsonResource
     {
-        return Team::create($data);
-    }
-    
-    public function getTeamById($id)
-    {
-        return Team::findOrFail($id);
+        return new TeamResource(Team::create($data));
     }
 
-    public function updateTeam(array $data, $id)
+    public function getTeamById(int $id): JsonResource
+    {
+        return new TeamResource(Team::findOrFail($id));
+    }
+
+    public function updateTeam(array $data, int $id): JsonResource
     {
         $team = Team::findOrFail($id);
         $team->update($data);
 
-        return $team;
+        return new TeamResource($team);
     }
 
-    public function deleteTeam($id)
+    public function deleteTeam(int $id): void
     {
         $team = Team::findOrFail($id);
         $team->delete();
+    }
+
+    public function getTeamPlayers(string $code, string $name): JsonResource
+    {
+        $team = Team::where('code', $code)->orWhere('name', $name)->firstOrFail();
+
+        return PlayerResource::collection($team->players);        
     }
 }

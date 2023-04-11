@@ -5,13 +5,14 @@ namespace App\Http\Controllers\API;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Http\JsonResponse;
 
 class LoginController extends BaseController
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(LoginRequest $request)
+    public function __invoke(LoginRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
