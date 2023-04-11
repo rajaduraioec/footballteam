@@ -20,8 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', LoginController::class);
 
 Route::get('team', [TeamController::class, 'index']);   
-Route::post('team/players', [TeamController::class, 'players']);   
-Route::get('player', [PlayerController::class, 'index']);   
+Route::post('team/players', [TeamController::class, 'players']);  
 Route::post('player/info', [PlayerController::class, 'player']);   
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -31,5 +30,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('team/{team}', [TeamController::class, 'update']);
     Route::delete('team/{team}', [TeamController::class, 'destroy']);
   
-    Route::resource('player', PlayerController::class)->except(['index']);     
+    Route::resource('player', PlayerController::class);     
 });

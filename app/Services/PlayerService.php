@@ -40,7 +40,8 @@ class PlayerService
 
     public function getPlayer(string $code, string $name): JsonResource
     {
-        $player = Player::where(DB::raw("concat(firstName,' ',lastName)"), $name)->orWhere('code', $code)->firstOrFail();
+        $player = Player::where(DB::raw('concat(firstName, " ", lastName)'), '=', $name)
+            ->orWhere('code', '=', $code)->firstOrFail();
 
         return new PlayerResource($player);
     }

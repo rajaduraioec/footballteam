@@ -40,7 +40,7 @@ class TeamService
 
     public function getTeamPlayers(string $code, string $name): JsonResource
     {
-        $team = Team::where('code', $code)->orWhere('name', $name)->firstOrFail();
+        $team = Team::where('code', '=', $code)->orWhere('name', '=', $name)->firstOrFail();
 
         return PlayerResource::collection($team->players);        
     }
