@@ -36,7 +36,7 @@ class PlayerController extends BaseController
     {
         $data['player'] = $this->playerRepository->createPlayer($request->validated());
 
-        return $this->sendResponse($data, 'Player created successfully.');
+        return $this->sendResponse($data, 'Player created successfully.', 201);
     }
 
     /**

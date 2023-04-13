@@ -35,7 +35,7 @@ class TeamController extends BaseController
     {
         $data['team'] = $this->teamRepository->createTeam($request->validated());
 
-        return $this->sendResponse($data, 'Team created successfully.');
+        return $this->sendResponse($data, 'Team created successfully.', 201);
     }
 
     /**

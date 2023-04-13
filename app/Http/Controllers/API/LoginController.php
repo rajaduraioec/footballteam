@@ -26,7 +26,7 @@ class LoginController extends BaseController
         } 
         else{ 
 
-            return $this->sendError('Unauthorized.', ['error'=>'Invalid Credentials']);
+            return $this->sendError('Unauthorized.', ['error'=>'Invalid Credentials'], 401);
         } 
     }
 }

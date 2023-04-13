@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 class BaseController extends Controller
 {
-    public function sendResponse(array $result, string $message): JsonResponse
+    public function sendResponse(array $result, string $message, int $code = 200): JsonResponse
     {
     	$response = [
             'success' => true,
@@ -15,7 +15,7 @@ class BaseController extends Controller
             'message' => $message,
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, $code);
     }
 
     public function sendError(string $error, array $errorMessages = [], int $code = 404): JsonResponse
