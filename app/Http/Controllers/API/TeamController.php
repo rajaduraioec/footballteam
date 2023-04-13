@@ -4,18 +4,18 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Team;
 use Illuminate\Http\Request;
-use App\Services\TeamService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
+use App\Repositories\TeamRepository;
 
 class TeamController extends BaseController
 {
-    protected $teamService;
+    protected $teamRepository;
 
-    public function __construct(TeamService $teamService)
+    public function __construct(TeamRepository $teamRepository)
     {
-        $this->teamService = $teamService;
+        $this->teamRepository = $teamRepository;
     }
 
     /**
@@ -23,7 +23,7 @@ class TeamController extends BaseController
      */
     public function index(): JsonResponse
     {
-        $data['teams'] = $this->teamService->getAllTeams();
+        $data['teams'] = $this->teamRepository->getAllTeams();
 
         return $this->sendResponse($data, 'Team list retrieved successfully.');
     }
@@ -33,7 +33,7 @@ class TeamController extends BaseController
      */
     public function store(StoreTeamRequest $request): JsonResponse
     {
-        $data['team'] = $this->teamService->createTeam($request->validated());
+        $data['team'] = $this->teamRepository->createTeam($request->validated());
 
         return $this->sendResponse($data, 'Team created successfully.');
     }
@@ -43,7 +43,7 @@ class TeamController extends BaseController
      */
     public function show(Team $team): JsonResponse
     {
-        $data['team'] = $this->teamService->getTeamById($team->id);
+        $data['team'] = $this->teamRepository->getTeamById($team->id);
 
         return $this->sendResponse($data, 'Team created successfully.');
     }
@@ -51,10 +51,11 @@ class TeamController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTeamRequest $request, Team $team): JsonResponse
+    public function update(UpdateTeamRequest $request, Team $team)
     {
-        $data['team'] = $this->teamService->updateTeam($request->validated(), $team->id);
-
+        
+        $data['team'] = $this->teamRepository->updateTeam($team->id, $request->validated());
+        
         return $this->sendResponse($data, 'Team updated successfully.');
     }
 
@@ -63,7 +64,7 @@ class TeamController extends BaseController
      */
     public function destroy(Team $team): JsonResponse
     {
-        $this->teamService->deleteTeam($team->id);
+        $this->teamRepository->deleteTeam($team->id);
         
         return $this->sendResponse([], 'Team deleted successfully.');
     }
@@ -73,7 +74,7 @@ class TeamController extends BaseController
         $code = $request->code ?? "";
         $name = $request->name ?? "";
 
-        $data['players'] = $this->teamService->getTeamPlayers($code, $name);
+        $data['players'] = $this->teamRepository->getTeamPlayers($code, $name);
 
         return $this->sendResponse($data, 'Team players retrieved successfully.');
     }

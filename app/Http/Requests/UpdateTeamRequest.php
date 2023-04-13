@@ -24,10 +24,10 @@ class UpdateTeamRequest extends FormRequest
     {
         return [
             'name' => [
-                'required', 'max:255', Rule::unique('teams')->ignore($this->route()->team->id),
+                'nullable', 'max:255', Rule::unique('teams')->ignore($this->route()->team->id),
             ],
             'logoURI' => [
-                'required', 'max:5000'
+                'nullable', 'max:5000'
             ]
         ];
     }

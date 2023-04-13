@@ -19,7 +19,7 @@ class PlayerResource extends JsonResource
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'playerImageURI' => $this->playerImageURI,
-            'team' => $this->when($request->is('*/player/info'), new TeamResource($this->team)),
+            'team' => new TeamResource($this->team),
         ];
     }
 }
